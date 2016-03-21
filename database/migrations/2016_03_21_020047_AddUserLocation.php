@@ -15,7 +15,7 @@ class AddUserLocation extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('address');
             $table->string('city');
-            $table->string('areacode');
+            $table->string('postcode');
         });
     }
 

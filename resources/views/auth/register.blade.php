@@ -24,6 +24,27 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Address</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="address" value="{{ old('address') }}">
+                            </div>  
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">City</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="city" value="{{ old('city') }}">
+                            </div>  
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Post Code</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="postcode" value="{{ old('postcode') }}">
+                            </div>  
+                        </div>                                                
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">E-Mail Address</label>
 
