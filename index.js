@@ -3,12 +3,12 @@ import { Router, Route, hashHistory } from 'react-router'
 import { render } from 'react-dom'
 import App from './modules/App'
 import About from './modules/About'
-import Repos from './modules/Repos'
+import Categories from './modules/Categories'
 
 render((
 	<Router history={hashHistory}>
 		<Route path="/" component={App}>
-			<Route path="/repos" component={Repos}/>
+			<Route path="/categories" component={Categories}/>
 			<Route path="/about" component={About}/>
 		</Route>	
  	</Router>
