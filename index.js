@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { render } from 'react-dom'
 import App from './modules/App'
 import About from './modules/About'
@@ -8,7 +8,7 @@ import Vitamin from './modules/Vitamin'
 import Home from './modules/Home'
 
 render((
-	<Router history={hashHistory}>
+	<Router history={browserHistory}>
 		<Route path="/" component={App}>
 		<IndexRoute component={Home} />
 			<Route path="/categories" component={Categories}>
