@@ -1,27 +1,33 @@
-# Laravel PHP Framework
+# Setting up the Project
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+First you'll need [Node.js](https://nodejs.org) and the package manager
+that comes with it: [npm](https://www.npmjs.com/).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Once you've got that working, head to the command line where we'll set
+up our project.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Clone the Tutorial
 
-## Official Documentation
+```
+git clone https://github.com/reactjs/react-router-tutorial
+cd react-router-tutorial
+cd lessons/01-setting-up
+npm install
+npm start
+```
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Now open up [http://localhost:8080](http://localhost:8080)
 
-## Contributing
+Feel free to poke around the code to see how we're using webpack and npm
+scripts to run the app.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+You should see a "Hello React Router" message in the browser.
 
-## Security Vulnerabilities
+## Make Some Changes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Open up `modules/App.js` and change the text to something like "Hello
+<your name>". The browser automatically reloads with your new code.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+[Next: Rendering a Router](../02-rendering-a-route/)
