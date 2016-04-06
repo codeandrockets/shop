@@ -14,11 +14,25 @@ var helper = require('./helpers');
 //****************   App   *****************************************//
 
 var App = React.createClass({
-
+	getInitialState : function() {
+		return {
+			products : {},
+			order : {}
+		}
+	},
+	addProduct : function(product){
+		var timestamp = (new Date()).getTime();
+		//update the state
+		this.state.products['product-' + timestamp] = product;
+		//set the state
+		this.setState({ products : this.state.products });
+	},
 	render : function() {
 		return (
 			<div>
 				<Products />
+				<Cart />
+				<Inventory addProduct={this.addProduct} />
 			</div>
 		)
 	}
@@ -35,10 +49,36 @@ var Products = React.createClass({
 	}
 });
 
-//****************   Cart   *******************************************//
+//****************   Add Products Form   *******************************//
+
+var AddProductForm = React.createClass({
+	addProduct : function(event) {
+		event.preventDefault();
+		//Take the data from the form and create an object
+		var product = {
+			name : this.refs.name.value,
+			price : this.refs.price.value,
+			desc : this.refs.desc.value
+		}
+		//Add product to the app state
+		this.props.addProduct(product);
+		this.refs.productForm.reset();
+	},
+	render : function() {
+		return (
+			<form ref="productForm" onSubmit={this.addProduct}>
+				<input type="text" ref="name" placeholder="Product Name" />
+				<input type="text" ref="price" placeholder="Price" />
+				<textarea type="text" ref="desc" placeholder="Product Description"></textarea>
+				<button type="submit">+ Add Item </button>
+			</form>
+		)
+	}
+})
+
+//****************   Cart   ********************************************//
 
 var Cart = React.createClass({
-	
 	render : function() {
 		return (
 			<p>Cart</p>
@@ -52,7 +92,10 @@ var Inventory = React.createClass({
 	
 	render : function() {
 		return (
-			<p>Inventory</p>
+			<div>
+				<h2>Inventory</h2>
+				<AddProductForm {...this.props}/>
+			</div>
 		)
 	}
 });
