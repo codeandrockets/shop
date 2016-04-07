@@ -27,10 +27,16 @@ var App = React.createClass({
 		//set the state
 		this.setState({ products : this.state.products });
 	},
+	renderProduct : function(key){
+		return <li>Hi {key}</li>
+	},
 	render : function() {
 		return (
 			<div>
 				<Products />
+				<ul>
+					{Object.keys(this.state.products).map(this.renderProduct)}
+				</ul>
 				<Cart />
 				<Inventory addProduct={this.addProduct} />
 			</div>
@@ -44,7 +50,7 @@ var Products = React.createClass({
 
 	render : function() {
 		return (
-			<p>Products</p>
+			<h2>Products</h2>
 		)
 	}
 });
@@ -118,6 +124,7 @@ var routes = (
 	<Router history={createBrowserHistory()}>
 		<Route path="/" component={App}/>
 		<Route path="/cart" component={Cart}/>
+		<Route path="/products" component={Products}/>
 		<Route path="/inventory" component={Inventory}/>
 		<Route path="/*" component={PageNotFound}/>
 	</Router>
