@@ -22,6 +22,10 @@ var App = React.createClass({
 			order : {}
 		}
 	},
+	addToOrder : function(key) {
+		this.state.order[key] = this.state.order[key] + 1 || 1;
+		this.setState({ order : this.state.order });
+	},
 	addProduct : function(product){
 		var timestamp = (new Date()).getTime();
 		//update the state
@@ -30,7 +34,7 @@ var App = React.createClass({
 		this.setState({ products : this.state.products });
 	},
 	renderProduct : function(key){
-		return <Product key={key} index={key} details={this.state.products[key]} />
+		return <Product key={key} index={key} details={this.state.products[key]} addToOrder={this.addToOrder}/>
 	},
 	render : function() {
 		return (
@@ -38,7 +42,7 @@ var App = React.createClass({
 				<ul>
 					{Object.keys(this.state.products).map(this.renderProduct)}
 				</ul>
-				<Cart />
+				<Cart  {...this.props} />
 				<Inventory addProduct={this.addProduct} />
 			</div>
 		)
@@ -48,14 +52,19 @@ var App = React.createClass({
 //****************   Product   ****************************************//
 
 var Product = React.createClass({
+	onButtonClick : function() {
+		console.log('Add the fish: ', this.props.index);
+		var key = this.props.index;
+		this.props.addToOrder(key);
+	},
 	render : function() {
 		var details = this.props.details;
-		console.log(details);
 		return (
 			<li>
 				<p>{details.name}</p>
-				<p>{details.price}</p>
+				<p>{helper.formatPrice(details.price)}</p>
 				<p>{details.desc}</p>
+				<button onClick={this.onButtonClick}>Add to Cart</button>
 			</li>
 		)
 	}
