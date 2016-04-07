@@ -6,6 +6,8 @@ var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Navigation = ReactRouter.Navigation;
+
+var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 //Require Helpers
@@ -28,12 +30,11 @@ var App = React.createClass({
 		this.setState({ products : this.state.products });
 	},
 	renderProduct : function(key){
-		return <li>Hi {key}</li>
+		return <Product key={key} index={key} details={this.state.products[key]} />
 	},
 	render : function() {
 		return (
 			<div>
-				<Products />
 				<ul>
 					{Object.keys(this.state.products).map(this.renderProduct)}
 				</ul>
@@ -44,13 +45,18 @@ var App = React.createClass({
 	}
 });
 
-//****************   Products   ****************************************//
+//****************   Product   ****************************************//
 
-var Products = React.createClass({
-
+var Product = React.createClass({
 	render : function() {
+		var details = this.props.details;
+		console.log(details);
 		return (
-			<h2>Products</h2>
+			<li>
+				<p>{details.name}</p>
+				<p>{details.price}</p>
+				<p>{details.desc}</p>
+			</li>
 		)
 	}
 });
@@ -124,7 +130,6 @@ var routes = (
 	<Router history={createBrowserHistory()}>
 		<Route path="/" component={App}/>
 		<Route path="/cart" component={Cart}/>
-		<Route path="/products" component={Products}/>
 		<Route path="/inventory" component={Inventory}/>
 		<Route path="/*" component={PageNotFound}/>
 	</Router>
