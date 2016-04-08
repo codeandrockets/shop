@@ -19,12 +19,12 @@ var App = React.createClass({
 	getInitialState : function() {
 		return {
 			products : {},
-			order : {}
+			cart : {}
 		}
 	},
 	addToOrder : function(key) {
-		this.state.order[key] = this.state.order[key] + 1 || 1;
-		this.setState({ order : this.state.order });
+		this.state.cart[key] = this.state.cart[key] + 1 || 1;
+		this.setState({ cart : this.state.cart });
 	},
 	addProduct : function(product){
 		var timestamp = (new Date()).getTime();
@@ -42,7 +42,7 @@ var App = React.createClass({
 				<ul>
 					{Object.keys(this.state.products).map(this.renderProduct)}
 				</ul>
-				<Cart  {...this.props} />
+				<Cart  products={this.state.products} cart={this.state.cart} />
 				<Inventory addProduct={this.addProduct} />
 			</div>
 		)
@@ -101,8 +101,24 @@ var AddProductForm = React.createClass({
 
 var Cart = React.createClass({
 	render : function() {
+		var cartIds = Object.keys(this.props.cart);
+
+		var total = cartIds.reduce((prevTotal, key)=> {
+			var product = this.props.products[key];
+			var count = this.props.cart[key];
+
+			if(product) {
+				return prevTotal + (count * parseInt(product.price) || 0);
+			}
+			return prevTotal;
+		}, 0);
 		return (
-			<p>Cart</p>
+			<div>
+				<h2>Shopping Cart</h2>
+				<ul>
+					<li>Total: {helper.formatPrice(total)}</li>
+				</ul>
+			</div>
 		)
 	}
 });
@@ -110,7 +126,6 @@ var Cart = React.createClass({
 //****************   Inventory   *************************************//
 
 var Inventory = React.createClass({
-	
 	render : function() {
 		return (
 			<div>
