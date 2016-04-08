@@ -53,13 +53,46 @@ var App = React.createClass({
 					{Object.keys(this.state.products).map(this.renderProduct)}
 				</ul>
 				<Cart  products={this.state.products} cart={this.state.cart} />
-				<Inventory addProduct={this.addProduct} />
+
 			</div>
 		)
 	}
 });
 
-//****************   Product   ****************************************//
+//****************   Inventory App ************************************//
+
+
+var InventoryApp = React.createClass({
+	getInitialState : function() {
+		return {
+			products : {},
+			cart : {}
+		}
+	},
+	componentDidMount : function() {
+		base.syncState('/products', {
+			context: this,
+			state: 'products'
+		});
+	},
+	addProduct : function(product){
+		var timestamp = (new Date()).getTime();
+		//update the state
+		this.state.products['product-' + timestamp] = product;
+		//set the state
+		this.setState({ products : this.state.products });
+	},
+	renderProduct : function(key){
+		return <Product key={key} index={key} details={this.state.products[key]} addToOrder={this.addToOrder}/>
+	},
+	render : function() {
+		return (
+			<div>
+				<Inventory addProduct={this.addProduct} />
+			</div>
+		)
+	}
+});
 
 //****************   Product   ****************************************//
 
@@ -177,7 +210,7 @@ var routes = (
 	<Router history={createBrowserHistory()}>
 		<Route path="/" component={App}/>
 		<Route path="/cart" component={Cart}/>
-		<Route path="/inventory" component={Inventory}/>
+		<Route path="/inventory" component={InventoryApp}/>
 		<Route path="/*" component={PageNotFound}/>
 	</Router>
 )
