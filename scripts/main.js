@@ -13,6 +13,10 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 //Require Helpers
 var helper = require('./helpers');
 
+//Firebase
+var Rebase = require('re-base');
+var base = Rebase.createClass('https://vitahealth.firebaseio.com/');
+
 //****************   App   *****************************************//
 
 var App = React.createClass({
@@ -21,6 +25,12 @@ var App = React.createClass({
 			products : {},
 			cart : {}
 		}
+	},
+	componentDidMount : function() {
+		base.syncState('/products', {
+			context: this,
+			state: 'products'
+		});
 	},
 	addToOrder : function(key) {
 		this.state.cart[key] = this.state.cart[key] + 1 || 1;
@@ -48,6 +58,8 @@ var App = React.createClass({
 		)
 	}
 });
+
+//****************   Product   ****************************************//
 
 //****************   Product   ****************************************//
 
@@ -100,6 +112,16 @@ var AddProductForm = React.createClass({
 //****************   Cart   ********************************************//
 
 var Cart = React.createClass({
+	renderOrder : function(key) {
+		var product = this.props.products[key];
+		var count = this.props.cart[key];
+
+		return <li>
+			{count}
+			{product.name}
+			{helper.formatPrice(count * product.price)}
+		</li>
+	},
 	render : function() {
 		var cartIds = Object.keys(this.props.cart);
 
@@ -116,6 +138,7 @@ var Cart = React.createClass({
 			<div>
 				<h2>Shopping Cart</h2>
 				<ul>
+					{cartIds.map(this.renderOrder)}
 					<li>Total: {helper.formatPrice(total)}</li>
 				</ul>
 			</div>
@@ -130,7 +153,7 @@ var Inventory = React.createClass({
 		return (
 			<div>
 				<h2>Inventory</h2>
-				<AddProductForm {...this.props}/>
+				<AddProductForm {...this.props} />
 			</div>
 		)
 	}
