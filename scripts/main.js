@@ -31,6 +31,18 @@ var App = React.createClass({
 			context: this,
 			state: 'products'
 		});
+
+	var localStorageRef = localStorage.getItem('cart-');
+
+	if(localStorageRef) {
+		this.setState({
+			cart : JSON.parse(localStorageRef)
+		});
+	   }
+	},
+
+	componentWillUpdate : function(nextProps, nextState) {
+		localStorage.setItem('cart-' , JSON.stringify(nextState.cart));
 	},
 	addToOrder : function(key) {
 		this.state.cart[key] = this.state.cart[key] + 1 || 1;
@@ -149,7 +161,7 @@ var Cart = React.createClass({
 		var product = this.props.products[key];
 		var count = this.props.cart[key];
 
-		return <li>
+		return <li key={key}>
 			{count}
 			{product.name}
 			{helper.formatPrice(count * product.price)}
