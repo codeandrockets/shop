@@ -17,9 +17,12 @@ var helper = require('./helpers');
 var Rebase = require('re-base');
 var base = Rebase.createClass('https://vitahealth.firebaseio.com/');
 
+var Catalyst = require('react-catalyst');
+
 //****************   App   *****************************************//
 
 var App = React.createClass({
+	mixins : [Catalyst.LinkedStateMixin],
 	getInitialState : function() {
 		return {
 			products : {},
@@ -65,7 +68,7 @@ var App = React.createClass({
 					{Object.keys(this.state.products).map(this.renderProduct)}
 				</ul>
 				<Cart  products={this.state.products} cart={this.state.cart} />
-
+				<Inventory addProduct={this.addProduct} products={this.state.products} linkState={this.linkState}/>
 			</div>
 		)
 	}
@@ -74,37 +77,37 @@ var App = React.createClass({
 //****************   Inventory App ************************************//
 
 
-var InventoryApp = React.createClass({
-	getInitialState : function() {
-		return {
-			products : {},
-			cart : {}
-		}
-	},
-	componentDidMount : function() {
-		base.syncState('/products', {
-			context: this,
-			state: 'products'
-		});
-	},
-	addProduct : function(product){
-		var timestamp = (new Date()).getTime();
-		//update the state
-		this.state.products['product-' + timestamp] = product;
-		//set the state
-		this.setState({ products : this.state.products });
-	},
-	renderProduct : function(key){
-		return <Product key={key} index={key} details={this.state.products[key]} addToOrder={this.addToOrder}/>
-	},
-	render : function() {
-		return (
-			<div>
-				<Inventory addProduct={this.addProduct} />
-			</div>
-		)
-	}
-});
+// var InventoryApp = React.createClass({
+// 	getInitialState : function() {
+// 		return {
+// 			products : {},
+// 			cart : {}
+// 		}
+// 	},
+// 	componentDidMount : function() {
+// 		base.syncState('/products', {
+// 			context: this,
+// 			state: 'products'
+// 		});
+// 	},
+// 	addProduct : function(product){
+// 		var timestamp = (new Date()).getTime();
+// 		//update the state
+// 		this.state.products['product-' + timestamp] = product;
+// 		//set the state
+// 		this.setState({ products : this.state.products });
+// 	},
+// 	renderProduct : function(key){
+// 		return <Product key={key} index={key} details={this.state.products[key]} addToOrder={this.addToOrder}/>
+// 	},
+// 	render : function() {
+// 		return (
+// 			<div>
+// 				<Inventory addProduct={this.addProduct} products={this.state.products} linkState={this.linkState}/>
+// 			</div>
+// 		)
+// 	}
+// });
 
 //****************   Product   ****************************************//
 
@@ -194,10 +197,22 @@ var Cart = React.createClass({
 //****************   Inventory   *************************************//
 
 var Inventory = React.createClass({
+	renderInventory : function(key) {
+		var linkState = this.props.linkState;
+		return (
+			<div key={key}>
+				<input type="text" valueLink={linkState('products.'+ key +'.name' )} />
+				<input type="text" valueLink={linkState('products.'+ key +'.price' )} />
+				<textarea valueLink={linkState('products.'+ key +'.desc' )}></textarea>
+				<button>Remove Product</button>
+			</div>
+		)
+	},
 	render : function() {
 		return (
 			<div>
 				<h2>Inventory</h2>
+				{Object.keys(this.props.products).map(this.renderInventory)}
 				<AddProductForm {...this.props} />
 			</div>
 		)
@@ -222,7 +237,6 @@ var routes = (
 	<Router history={createBrowserHistory()}>
 		<Route path="/" component={App}/>
 		<Route path="/cart" component={Cart}/>
-		<Route path="/inventory" component={InventoryApp}/>
 		<Route path="/*" component={PageNotFound}/>
 	</Router>
 )
